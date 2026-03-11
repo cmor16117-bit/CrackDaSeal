@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CrackDa$eal – Official Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&family=Oswald:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #050505;
+      --cream: #f0e8d0;
+      --green: #2a9c2a;
+      --green-drip: #1a7a1a;
+      --gold: #c87c10;
+      --amber: #e8a020;
+      --red: #8b1a1a;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 150px 150px;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      background: linear-gradient(to bottom, rgba(5,5,5,0.98) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(240,232,208,0.08);
+    }
+
+    .nav-logo {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.4rem;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+    .nav-logo span { color: var(--green); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--green); }
+
+    .nav-cart {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--green);
+      padding: 8px 20px;
+      text-decoration: none;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+      transition: background 0.2s;
+    }
+    .nav-cart:hover { background: var(--amber); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 20px 60px;
+    }
+
+    /* spray paint splatter bg */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 30%, rgba(42,156,42,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(200,124,16,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 30% at 50% 50%, rgba(139,26,26,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-logo-wrapper {
+      position: relative;
+      animation: floatIn 1s cubic-bezier(0.16,1,0.3,1) forwards;
+      opacity: 0;
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(40px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .hero-logo {
+      width: min(520px, 90vw);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 40px rgba(42,156,42,0.3)) drop-shadow(0 0 80px rgba(200,124,16,0.15));
+    }
+
+    .hero-tagline {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(0.7rem, 2vw, 1rem);
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .hero-tagline span { color: var(--green); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 0.7; transform: translateY(0); }
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .btn-primary {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--cream);
+      padding: 14px 40px;
+      text-decoration: none;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background 0.2s, transform 0.15s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--green); color: var(--black); transform: translateY(-2px); }
+
+    .btn-secondary {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: transparent;
+      padding: 13px 40px;
+      text-decoration: none;
+      border: 1px solid rgba(240,232,208,0.3);
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--amber); color: var(--amber); transform: translateY(-2px); }
+
+    /* ── MARQUEE TICKER ── */
+    .ticker {
+      width: 100%;
+      background: var(--green);
+      overflow: hidden;
+      padding: 10px 0;
+      border-top: 2px solid var(--green-drip);
+      border-bottom: 2px solid var(--green-drip);
+    }
+    .ticker-track {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 18s linear infinite;
+    }
+    .ticker-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 4px;
+      color: var(--black);
+      padding: 0 32px;
+    }
+    .ticker-item::before { content: '★ '; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 100px 40px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 0.92;
+      color: var(--cream);
+      margin-bottom: 40px;
+    }
+
+    .section-title .dollar { color: var(--green); }
+
+    /* ── DROPS / PRODUCTS ── */
+    .drops-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2px;
+    }
+
+    .drop-card {
+      position: relative;
+      background: #111;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 3/4;
+    }
+
+    .drop-card-bg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+      opacity: 0.08;
+      transition: opacity 0.4s;
+    }
+
+    .drop-card:hover .drop-card-bg { opacity: 0.15; }
+
+    .drop-card-content {
+      position: absolute;
+      inset: 0;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, transparent 60%);
+      transition: background 0.3s;
+    }
+
+    .drop-card:hover .drop-card-content {
+      background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.3) 100%);
+    }
+
+    .drop-badge {
+      position: absolute;
+      top: 20px; right: 20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      padding: 4px 12px;
+      clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+    }
+    .badge-new { background: var(--green); color: var(--black); }
+    .badge-hot { background: var(--amber); color: var(--black); }
+    .badge-sold { background: #333; color: #888; }
+
+    .drop-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: var(--cream);
+      line-height: 1;
+    }
+
+    .drop-type {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(240,232,208,0.5);
+      margin-top: 4px;
+    }
+
+    .drop-price {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.4rem;
+      color: var(--green);
+      margin-top: 8px;
+    }
+
+    .drop-add {
+      margin-top: 14px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--cream);
+      border: none;
+      padding: 10px 20px;
+      clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.2s, transform 0.2s, background 0.2s;
+    }
+    .drop-card:hover .drop-add { opacity: 1; transform: translateY(0); }
+    .drop-add:hover { background: var(--green); }
+
+    /* card color variations */
+    .card-1 .drop-card-bg { color: #2a9c2a; }
+    .card-2 .drop-card-bg { color: #c87c10; }
+    .card-3 .drop-card-bg { color: #8b1a1a; }
+    .card-4 .drop-card-bg { color: #1a4a8a; }
+    .card-5 .drop-card-bg { color: #6a1a8a; }
+    .card-6 .drop-card-bg { color: #2a9c2a; }
+
+    /* ── ABOUT STRIP ── */
+    .about-strip {
+      padding: 80px 40px;
+      background: linear-gradient(135deg, #0d0d0d 0%, #111 100%);
+      border-top: 1px solid rgba(240,232,208,0.05);
+      border-bottom: 1px solid rgba(240,232,208,0.05);
+    }
+
+    .about-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: rgba(240,232,208,0.65);
+      margin-top: 20px;
+    }
+
+    .about-text p + p { margin-top: 16px; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .stat-box {
+      background: #111;
+      padding: 32px 24px;
+      border-left: 3px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .stat-box:hover { border-color: var(--green); }
+    .stat-box:nth-child(2):hover { border-color: var(--amber); }
+    .stat-box:nth-child(3):hover { border-color: var(--red); }
+    .stat-box:nth-child(4):hover { border-color: var(--cream); }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--cream);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(240,232,208,0.4);
+      margin-top: 6px;
+    }
+
+    /* ── LOOKBOOK ── */
+    .lookbook-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 2px;
+    }
+
+    .look-tile {
+      background: #111;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .look-tile:first-child {
+      grid-row: 1 / 3;
+      aspect-ratio: unset;
+    }
+
+    .look-inner {
+      font-size: 5rem;
+      opacity: 0.12;
+      transition: opacity 0.3s, transform 0.4s;
+    }
+    .look-tile:hover .look-inner { opacity: 0.22; transform: scale(1.08) rotate(-5deg); }
+
+    .look-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(5,5,5,0.85), transparent);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      color: var(--cream);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .look-tile:hover .look-overlay { opacity: 1; transform: translateY(0); }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      padding: 100px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .newsletter::before {
+      content: '$';
+      position: absolute;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 40vw;
+      color: var(--green);
+      opacity: 0.02;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .newsletter-inner { max-width: 600px; margin: 0 auto; }
+
+    .email-row {
+      display: flex;
+      gap: 0;
+      margin-top: 32px;
+    }
+
+    .email-input {
+      flex: 1;
+      background: #111;
+      border: 1px solid rgba(240,232,208,0.15);
+      border-right: none;
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      padding: 14px 20px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .email-input:focus { border-color: var(--green); }
+    .email-input::placeholder { color: rgba(240,232,208,0.3); }
+
+    .email-submit {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 4px;
+      background: var(--green);
+      color: var(--black);
+      border: none;
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .email-submit:hover { background: var(--amber); }
+
+    .email-note {
+      font-size: 0.7rem;
+      color: rgba(240,232,208,0.3);
+      margin-top: 12px;
+      letter-spacing: 2px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #030303;
+      border-top: 1px solid rgba(240,232,208,0.06);
+      padding: 60px 40px 30px;
+    }
+
+    .footer-top {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(240,232,208,0.06);
+    }
+
+    .footer-brand-name {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.6rem;
+      color: var(--cream);
+    }
+    .footer-brand-name span { color: var(--green); }
+
+    .footer-desc {
+      font-size: 0.8rem;
+      line-height: 1.8;
+      color: rgba(240,232,208,0.35);
+      margin-top: 12px;
+    }
+
+    .footer-col-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(240,232,208,0.5);
+      margin-bottom: 16px;
+    }
+
+    .footer-links { list-style: none; }
+    .footer-links li + li { margin-top: 10px; }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: rgba(240,232,208,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--green); }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 24px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: rgba(240,232,208,0.2);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 16px;
+    }
+
+    .social-link {
+      width: 36px; height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+      color: rgba(240,232,208,0.4);
+      font-size: 0.85rem;
+      text-decoration: none;
+      clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+      transition: background 0.2s, color 0.2s;
+    }
+    .social-link:hover { background: var(--green); color: var(--black); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── DRIP DIVIDER ── */
+    .drip-divider {
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      display: block;
+    }
+    .drip-divider svg { display: block; width: 100%; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .about-inner { grid-template-columns: 1fr; gap: 40px; }
+      .lookbook-row { grid-template-columns: 1fr 1fr; grid-template-rows: unset; }
+      .look-tile:first-child { grid-row: unset; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 60px 20px; }
+      .hero-cta-group { flex-direction: column; align-items: center; }
+      .lookbook-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Crack<span>$</span>eal</a>
+    <ul class="nav-links">
+      <li><a href="#drops">Drops</a></li>
+      <li><a href="#lookbook">Lookbook</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#drops" class="nav-cart">Shop Now</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-logo-wrapper">
+      <img
+        src="/mnt/user-data/uploads/bc66612ec09d457b9ce4ed67f61a1d80.png"
+        alt="CrackDa$eal Logo"
+        class="hero-logo"
+      />
+    </div>
+    <p class="hero-tagline">Street Certified &nbsp;·&nbsp; <span>$</span>eal The Deal &nbsp;·&nbsp; Limited Drops Only</p>
+    <div class="hero-cta-group">
+      <a href="#drops" class="btn-primary">Shop The Drop</a>
+      <a href="#lookbook" class="btn-secondary">View Lookbook</a>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">NEW DROP AVAILABLE</span>
+      <span class="ticker-item">LIMITED QUANTITIES</span>
+      <span class="ticker-item">CRACK DA $EAL</span>
+      <span class="ticker-item">STREET CERTIFIED</span>
+      <span class="ticker-item">FREE SHIPPING OVER $100</span>
+      <span class="ticker-item">AUTHENTIC STREETWEAR</span>
+      <span class="ticker-item">NEW DROP AVAILABLE</span>
+      <span class="ticker-item">LIMITED QUANTITIES</span>
+      <span class="ticker-item">CRACK DA $EAL</span>
+      <span class="ticker-item">STREET CERTIFIED</span>
+      <span class="ticker-item">FREE SHIPPING OVER $100</span>
+      <span class="ticker-item">AUTHENTIC STREETWEAR</span>
+    </div>
+  </div>
+
+  <!-- DROPS -->
+  <section id="drops">
+    <p class="section-label reveal">Latest Drops</p>
+    <h2 class="section-title reveal">The <span class="dollar">$</span>tash</h2>
+    <div class="drops-grid reveal">
+
+      <div class="drop-card card-1">
+        <div class="drop-card-bg">💵</div>
+        <span class="drop-badge badge-new">New</span>
+        <div class="drop-card-content">
+          <div class="drop-name">OG Hoodie</div>
+          <div class="drop-type">Heavyweight Fleece</div>
+          <div class="drop-price">$85</div>
+          <button class="drop-add">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="drop-card card-2">
+        <div class="drop-card-bg">🍺</div>
+        <span class="drop-badge badge-hot">Hot</span>
+        <div class="drop-card-content">
+          <div class="drop-name">40oz Tee</div>
+          <div class="drop-type">Heavy Cotton Tee</div>
+          <div class="drop-price">$45</div>
+          <button class="drop-add">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="drop-card card-3">
+        <div class="drop-card-bg">🎯</div>
+        <span class="drop-badge badge-new">New</span>
+        <div class="drop-card-content">
+          <div class="drop-name">Drip Cap</div>
+          <div class="drop-type">6-Panel Snapback</div>
+          <div class="drop-price">$38</div>
+          <button class="drop-add">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="drop-card card-4">
+        <div class="drop-card-bg">💰</div>
+        <span class="drop-badge badge-sold">Sold Out</span>
+        <div class="drop-card-content">
+          <div class="drop-name">Da Deal Shorts</div>
+          <div class="drop-type">Nylon Cargo Shorts</div>
+          <div class="drop-price">$65</div>
+          <button class="drop-add">Notify Me</button>
+        </div>
+      </div>
+
+      <div class="drop-card card-5">
+        <div class="drop-card-bg">⭐</div>
+        <span class="drop-badge badge-hot">Hot</span>
+        <div class="drop-card-content">
+          <div class="drop-name">Stack Crew</div>
+          <div class="drop-type">Crewneck Sweatshirt</div>
+          <div class="drop-price">$72</div>
+          <button class="drop-add">Add to Bag</button>
+        </div>
+      </div>
+
+      <div class="drop-card card-6">
+        <div class="drop-card-bg">🔥</div>
+        <span class="drop-badge badge-new">New</span>
+        <div class="drop-card-content">
+          <div class="drop-name">$eal Joggers</div>
+          <div class="drop-type">French Terry Joggers</div>
+          <div class="drop-price">$78</div>
+          <button class="drop-add">Add to Bag</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <div class="about-strip" id="about">
+    <div class="about-inner">
+      <div class="about-text reveal">
+        <p class="section-label">The Brand</p>
+        <h2 class="section-title" style="font-size:clamp(2.5rem,5vw,4.5rem);">Built On The <span class="dollar">$</span>treet</h2>
+        <p>CrackDa$eal was born from the streets — raw energy, real culture, zero compromise. Every piece is designed to carry the weight of where we come from and where we're going.</p>
+        <p>We don't follow trends. We set them. Limited drops, heavy fabrics, graphics that say exactly what they mean. If you know, you know.</p>
+        <div style="margin-top:28px;">
+          <a href="#drops" class="btn-primary" style="display:inline-block;">Browse All Drops</a>
+        </div>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-box">
+          <div class="stat-num">100<span style="color:var(--green)">%</span></div>
+          <div class="stat-label">Street Born</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">40<span style="color:var(--amber)">oz</span></div>
+          <div class="stat-label">Of Pure Culture</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">0<span style="color:var(--red)">BS</span></div>
+          <div class="stat-label">Zero Compromise</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num"><span style="color:var(--green)">$</span>eal</div>
+          <div class="stat-label">Certified</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOOKBOOK -->
+  <section id="lookbook">
+    <p class="section-label reveal">Lookbook</p>
+    <h2 class="section-title reveal">How We <span class="dollar">$</span>tyle</h2>
+    <div class="lookbook-row reveal">
+      <div class="look-tile">
+        <div class="look-inner">🧢</div>
+        <div class="look-overlay">THE OG FIT</div>
+      </div>
+      <div class="look-tile">
+        <div class="look-inner">👟</div>
+        <div class="look-overlay">HEAT CHECK</div>
+      </div>
+      <div class="look-tile">
+        <div class="look-inner">🎽</div>
+        <div class="look-overlay">STACKED UP</div>
+      </div>
+      <div class="look-tile">
+        <div class="look-inner">🔑</div>
+        <div class="look-overlay">KEY FIT</div>
+      </div>
+      <div class="look-tile">
+        <div class="look-inner">💎</div>
+        <div class="look-overlay">DRIPPED OUT</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter" id="contact">
+    <div class="newsletter-inner reveal">
+      <p class="section-label">Stay Connected</p>
+      <h2 class="section-title" style="font-size:clamp(2.5rem,6vw,5rem);">Get First<br>On The Drop</h2>
+      <p style="color:rgba(240,232,208,0.5);font-size:0.9rem;line-height:1.8;">Join the inner circle. Be first to know when new drops hit. No spam — just heat.</p>
+      <div class="email-row">
+        <input class="email-input" type="email" placeholder="your@email.com" />
+        <button class="email-submit">Lock It In</button>
+      </div>
+      <p class="email-note">By signing up you agree to receive exclusive drop notifications.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Crack<span>$</span>eal</div>
+        <p class="footer-desc">Street certified clothing brand. Limited drops, heavy fabric, real culture. No cap, no compromise.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Shop</div>
+        <ul class="footer-links">
+          <li><a href="#">Hoodies</a></li>
+          <li><a href="#">Tees</a></li>
+          <li><a href="#">Headwear</a></li>
+          <li><a href="#">Bottoms</a></li>
+          <li><a href="#">Accessories</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Info</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Sizing Guide</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 CrackDa$eal. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#" class="social-link" title="Instagram">IG</a>
+        <a href="#" class="social-link" title="TikTok">TK</a>
+        <a href="#" class="social-link" title="Twitter">X</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Add to bag feedback
+    document.querySelectorAll('.drop-add').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const orig = this.textContent;
+        if (orig === 'Notify Me') {
+          this.textContent = 'On The List ✓';
+          this.style.background = 'var(--amber)';
+        } else {
+          this.textContent = 'Added ✓';
+          this.style.background = 'var(--green)';
+        }
+        setTimeout(() => {
+          this.textContent = orig;
+          this.style.background = '';
+        }, 1800);
+      });
+    });
+
+    // Email signup
+    document.querySelector('.email-submit').addEventListener('click', function() {
+      const input = document.querySelector('.email-input');
+      if (input.value && input.value.includes('@')) {
+        this.textContent = 'You\'re In ✓';
+        this.style.background = 'var(--amber)';
+        input.value = '';
+        input.placeholder = 'Welcome to the fam 🔑';
+      }
+    });
+  </script>
+</body>
+</html>
