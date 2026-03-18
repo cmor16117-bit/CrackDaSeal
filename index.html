@@ -995,16 +995,20 @@
 
     .summary-totals { margin-top: 20px; }
     .summary-row {
-      display: flex; justify-content: space-between;
-      font-family: 'Oswald', sans-serif; font-size: 0.8rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'Oswald', sans-serif; font-size: 0.85rem;
       letter-spacing: 2px; text-transform: uppercase;
-      color: rgba(240,232,208,0.5); padding: 8px 0;
+      padding: 10px 0; border-bottom: 1px solid rgba(240,232,208,0.05);
     }
+    .summary-row span:first-child { color: rgba(240,232,208,0.45); }
+    .summary-row span:last-child { color: var(--cream); font-size: 0.95rem; }
     .summary-row.total {
-      color: var(--cream); font-size: 1rem;
-      border-top: 1px solid rgba(240,232,208,0.1); margin-top: 8px; padding-top: 16px;
+      border-top: 2px solid rgba(240,232,208,0.12);
+      border-bottom: none;
+      margin-top: 8px; padding-top: 16px;
     }
-    .summary-row.total span:last-child { font-family: 'Permanent Marker', cursive; color: var(--green); font-size: 1.3rem; }
+    .summary-row.total span:first-child { color: var(--cream); font-size: 1rem; }
+    .summary-row.total span:last-child { font-family: 'Permanent Marker', cursive; color: var(--green); font-size: 1.4rem; }
 
     .summary-shipping-note {
       font-size: 0.7rem; letter-spacing: 1px; color: var(--green);
@@ -1223,9 +1227,9 @@
         <div class="summary-title">Order Summary</div>
         <div id="checkout-summary-items"></div>
         <div class="summary-totals">
-          <div class="summary-row"><span>Subtotal</span><span id="summary-subtotal">$0.00</span></div>
+          <div class="summary-row"><span>Subtotal</span><span id="summary-subtotal">—</span></div>
           <div class="summary-row"><span>Shipping</span><span id="summary-shipping">—</span></div>
-          <div class="summary-row total"><span>Total</span><span id="summary-total">$0.00</span></div>
+          <div class="summary-row total"><span>Total</span><span id="summary-total">—</span></div>
         </div>
         <div class="summary-shipping-note" id="summary-free-note"></div>
       </div>
